@@ -1,4 +1,5 @@
 from cProfile import label
+from cmath import atan
 from hashlib import new
 from re import U
 import pygame
@@ -18,7 +19,8 @@ white = (255,255,255)
 
 clock = pygame.time.Clock()
 crashed = False
-
+points=[]
+points.append([0,0])
 measured_positions_x=[]
 measured_positions_y=[]
 predicted_positions_x=[]
@@ -28,7 +30,8 @@ cov_hight=[]
 position=np.array([[0],[0]])
 position_measure=position
 p_0=np.array([[0,0],[0,0]])
-
+teta=-1
+point_prev=[[0],[0]]
 def car(x,y):
     gameDisplay.blit(carImg, (x,y))
 
@@ -129,10 +132,21 @@ while not crashed:
     GREEN=(0,255,0)
 
     red = (180, 50, 50)
-    size = (0, 0, p_0[0,0]*2000, 2000*p_0[1,1])
-    pygame.draw.ellipse(gameDisplay, red, size)  
-    pygame.draw.rect(gameDisplay,BLUE,(position[0,0]*1000+50,position[1,0]*1000+50,10,10))
-    
+    size = (position[0,0]*1000+50-(p_0[0,0]*2000)/2, position[1,0]*1000+50-(2000*p_0[1,1])/2, p_0[0,0]*2000, 2000*p_0[1,1])
+    pygame.draw.ellipse(gameDisplay, red, size,1)  
+    # pygame.draw.rect(gameDisplay,BLUE,(position[0,0]*1000+50,position[1,0]*1000+50,10,10))
+    # points1=[(position[0,0]*1000+50,position[1,0]*1000+50), (position[0,0]*1000+50,position[1,0]*1000+500), (position[0,0]*1000+250,position[1,0]*1000+500)]
+    # pygame.draw.polygone(gameDisplay, color=(255,0,0),points=points1)
+    # teta=atan((point_prev[1,0]-(position[1,0]*1000+50))/(point_prev[0,0]-(position[1,0]*1000+50)))
+    pygame.draw.polygon(gameDisplay, BLUE,
+                        [[position[0,0]*1000+50,position[1,0]*1000+50],[position[0,0]*1000+40,position[1,0]*1000+35] ,
+                        [position[0,0]*1000+40,position[1,0]*1000+65]])
+  
+    points.append([position[0,0]*1000+50,position[1,0]*1000+50])
+    pygame.draw.lines(gameDisplay,RED,False,points)
+# pygame.display.update()
+    # pygame.draw.polygon(surface=gameDisplay, color=(255, 0, 0),points=[(position[0,0]*1000+50,position[1,0]*1000+50), (position[0,0]*1000+40,position[1,0]*1000+40), (position[0,0]*1000+30,position[1,0]*1000+30)])
+
     if(t%8==0):
         pygame.draw.rect(gameDisplay,RED,(position_measure[0,0]*1000+50,(position_measure[1,0]/2)*1000+50,10,10))
         pygame.draw.rect(gameDisplay,GREEN,(position_new_true[0,0]*1000+50,(position_new_true[1,0]/2)*1000+50,10,10))

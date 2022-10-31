@@ -35,7 +35,8 @@ predicted_positions_y=[]
 cov_width=[]
 cov_hight=[]
 center=np.array([[10],[10]])
-
+points=[]
+points.append([400,400])
 
 
 position=np.array([[0],[0],[0]])
@@ -157,10 +158,16 @@ while not crashed:
     
     surface = pygame.Surface((320, 240))
     red = (180, 50, 50)
-    size = (0, 0, p_0[0,0]*2000, 2000*p_0[1,1])
-    pygame.draw.ellipse(gameDisplay, red, size)
+    # size = (0, 0, p_0[0,0]*2000, 2000*p_0[1,1])
+    pygame.draw.polygon(gameDisplay, BLUE,
+                        [[position[0,0]*1000+400,position[1,0]*1000+400],[position[0,0]*1000+390,position[1,0]*1000+390] ,
+                        [position[0,0]*1000+400,position[1,0]*1000+410]])
 
-    pygame.draw.rect(gameDisplay,BLUE,(position[0,0]*1000+400,position[1,0]*1000+400,10,10))
+    size = (position[0,0]*1000+400-(p_0[0,0]*2000)/2, position[1,0]*1000+400-(2000*p_0[1,1])/2, p_0[0,0]*2000, 2000*p_0[1,1])
+    pygame.draw.ellipse(gameDisplay, red, size,1)
+    points.append([position[0,0]*1000+400,position[1,0]*1000+400])
+    pygame.draw.lines(gameDisplay,RED,False,points,5)
+    # pygame.draw.rect(gameDisplay,BLUE,(position[0,0]*1000+400,position[1,0]*1000+400,10,10))
     
     if(t%8==0):
         pygame.draw.rect(gameDisplay,RED,(position_measure[0,0]*1000+400,(position_measure[1,0]/2)*1000+400,10,10))

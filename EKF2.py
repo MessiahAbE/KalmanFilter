@@ -34,8 +34,11 @@ predicted_positions_x=[]
 predicted_positions_y=[]
 cov_width=[]
 cov_hight=[]
+points=[]
+points.append([400,400])
 #carImg = pygame.image.load('car_128.png')
-
+points=[]
+points.append([400,400])
 center=np.array([[10],[10]])
 
 
@@ -157,14 +160,12 @@ def update_final(H,K):
     p_0=np.matmul((np.identity(3)-np.matmul(K,H)),p_0)
     K = [[K[0,0],K[0,1]],[K[1,0],K[1,1]]]
     
-    print("updated polar is : ", position_polar)
     position_polar = position_polar + np.matmul( K , (polar_measure - position_polar) )
     #position_polar = position_polar
-    print("updated polar is : ", position_polar)
+
     
     Pose = np.array([center[0,0] + [position_polar[0,0]*cos(position_polar[1,0])], center[1,0] + [position_polar[0,0]*sin(position_polar[1,0])]])
-    print("PPPPPP: ",position)
-    print("PPPPPPPP: ",Pose)
+
     position[0,0] = Pose[0,0]
     position[1,0] = Pose[1,0]
 #    position[0,0] = (position_polar[0,0]*cos(position_polar[1,0]))
@@ -208,17 +209,20 @@ while not crashed:
     surface = pygame.Surface((320, 240))
     red = (180, 50, 50)
     size = (0, 0, p_0[0,0]*2000, 2000*p_0[1,1])
-    pygame.draw.ellipse(gameDisplay, red, size)
-    
+    # pygame.draw.ellipse(gameDisplay, red, size)
+    size = (position[0,0]*1000+400-(p_0[0,0]*2000)/2, position[1,0]*1000+400-(2000*p_0[1,1])/2, p_0[0,0]*2000, 2000*p_0[1,1])
+    pygame.draw.ellipse(gameDisplay, red, size,1)    
     
     Pose = np.array([center[0,0] + [position_polar[0,0]*cos(position_polar[1,0])], center[1,0] + [position_polar[0,0]*sin(position_polar[1,0])]])
     Pose_measure = np.array([center[0,0] + [polar_measure[0,0]*cos(polar_measure[1,0])], center[1,0] + [polar_measure[0,0]*sin(polar_measure[1,0])]])
 
-    print("POOOOOSE: ",Pose)
-    print("POOOOSITION: ",position)
-    pygame.draw.rect(gameDisplay,BLUE,(400+1000*(Pose[0,0]),400+1000*Pose[1,0],10,10))
+    pygame.draw.polygon(gameDisplay, BLUE,
+                        [[position[0,0]*1000+400,position[1,0]*1000+400],[position[0,0]*1000+390,position[1,0]*1000+390] ,
+                        [position[0,0]*1000+400,position[1,0]*1000+410]])
+    # pygame.draw.rect(gameDisplay,BLUE,(400+1000*(Pose[0,0]),400+1000*Pose[1,0],10,10))
     pygame.draw.rect(gameDisplay,GREEN,(400+1000*(Pose_measure[0,0]),400+1000*(Pose_measure[1,0]),10,10))
- 
+    points.append([position[0,0]*1000+400,position[1,0]*1000+400])
+    pygame.draw.lines(gameDisplay,RED,False,points,5) 
     pygame.display.update()
     clock.tick(8)
     measured_positions_x.append(Pose_measure[0,0])
