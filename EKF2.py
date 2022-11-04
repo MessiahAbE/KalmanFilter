@@ -40,7 +40,10 @@ points.append([400,400])
 points=[]
 points.append([400,400])
 center=np.array([[10],[10]])
-
+points_measure=[]
+points_gt=[]
+points_gt.append([400,400])
+points_measure.append([400,400])
 
 
 position=np.array([[0],[0],[0]])
@@ -219,10 +222,19 @@ while not crashed:
     pygame.draw.polygon(gameDisplay, BLUE,
                         [[position[0,0]*1000+400,position[1,0]*1000+400],[position[0,0]*1000+390,position[1,0]*1000+390] ,
                         [position[0,0]*1000+400,position[1,0]*1000+410]])
-    # pygame.draw.rect(gameDisplay,BLUE,(400+1000*(Pose[0,0]),400+1000*Pose[1,0],10,10))
+    # pygame.draw.rect(gameDisplay,BLUE,(400+1000*(Pose[0,0]),400+1000*Pose[1,0],10,10))\\
+    if(Pose_measure[0,0]!=10):
+        points_measure.append([Pose_measure[0,0]*1000+400,(Pose_measure[1,0])*1000+400])
+        pygame.draw.lines(gameDisplay,RED,False,points_measure,5)
     pygame.draw.rect(gameDisplay,GREEN,(400+1000*(Pose_measure[0,0]),400+1000*(Pose_measure[1,0]),10,10))
     points.append([position[0,0]*1000+400,position[1,0]*1000+400])
-    pygame.draw.lines(gameDisplay,RED,False,points,5) 
+    points_gt.append([position_new_true[0,0]*1000+400,position_new_true[1,0]*1000+400])
+
+    pygame.draw.lines(gameDisplay,BLUE,False,points,5)
+    pygame.draw.lines(gameDisplay,GREEN,False,points_gt,5)
+
+    print("********")
+    print(points_measure)
     pygame.display.update()
     clock.tick(8)
     measured_positions_x.append(Pose_measure[0,0])

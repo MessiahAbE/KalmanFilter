@@ -37,6 +37,10 @@ cov_hight=[]
 center=np.array([[10],[10]])
 points=[]
 points.append([400,400])
+points_measure=[]
+points_gt=[]
+points_gt.append([400,400])
+points_measure.append([400,400])
 
 
 position=np.array([[0],[0],[0]])
@@ -166,7 +170,11 @@ while not crashed:
     size = (position[0,0]*1000+400-(p_0[0,0]*2000)/2, position[1,0]*1000+400-(2000*p_0[1,1])/2, p_0[0,0]*2000, 2000*p_0[1,1])
     pygame.draw.ellipse(gameDisplay, red, size,1)
     points.append([position[0,0]*1000+400,position[1,0]*1000+400])
-    pygame.draw.lines(gameDisplay,RED,False,points,5)
+    points_gt.append([position_new_true[0,0]*1000+400,position_new_true[1,0]*1000+400])
+    points_measure.append([position_measure[0,0]*1000+400,(position_measure[1,0]/2)*1000+400])
+    pygame.draw.lines(gameDisplay,BLUE,False,points,5)
+    pygame.draw.lines(gameDisplay,GREEN,False,points_gt,5)
+    pygame.draw.lines(gameDisplay,RED,False,points_measure,5)
     # pygame.draw.rect(gameDisplay,BLUE,(position[0,0]*1000+400,position[1,0]*1000+400,10,10))
     
     if(t%8==0):

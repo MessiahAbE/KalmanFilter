@@ -21,6 +21,10 @@ clock = pygame.time.Clock()
 crashed = False
 points=[]
 points.append([0,0])
+points_measure=[]
+points_gt=[]
+points_gt.append([0,0])
+points_measure.append([0,0])
 measured_positions_x=[]
 measured_positions_y=[]
 predicted_positions_x=[]
@@ -143,7 +147,12 @@ while not crashed:
                         [position[0,0]*1000+40,position[1,0]*1000+65]])
   
     points.append([position[0,0]*1000+50,position[1,0]*1000+50])
-    pygame.draw.lines(gameDisplay,RED,False,points)
+    points_gt.append([position_new_true[0,0]*1000+50,position_new_true[1,0]*1000+50])
+    points_measure.append([position_measure[0,0]*1000+50,(position_measure[1,0]/2)*1000+50])
+    pygame.draw.lines(gameDisplay,BLUE,False,points,5)
+    pygame.draw.lines(gameDisplay,GREEN,False,points_gt,5)
+    pygame.draw.lines(gameDisplay,RED,False,points_measure,5)
+
 # pygame.display.update()
     # pygame.draw.polygon(surface=gameDisplay, color=(255, 0, 0),points=[(position[0,0]*1000+50,position[1,0]*1000+50), (position[0,0]*1000+40,position[1,0]*1000+40), (position[0,0]*1000+30,position[1,0]*1000+30)])
 
